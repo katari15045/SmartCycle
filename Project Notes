@@ -1,0 +1,302 @@
+
+
+LDR (Light Dependent Resistor or Photo Resistor)
+--------------------------------------------------------------
+
+
+It detects light.
+If light intensity increases then resistance decreases(Electrons get exited & current increases.)
+
+
+Gyroscope
+--------------------------------------------------------------
+
+
+If I want to balance a robot then gyroscope can be used to measure the rotation of an object from it's balanced position & sends corrections to a motor.
+
+
+Alternating Current(AC)
+--------------------------------------------------------------
+
+Current which reverses the direction periodically & varying in magnitude.
+
+
+Dynamo
+--------------------------------------------------------------
+
+
+Converts rotational kinetic energy to electrical energy(AC) by the concept of "Change in magnetic flux induces voltage".
+
+
+
+Commutator
+--------------------------------------------------------------
+
+It converts AC to DC i.e Dynamo outputs AC.Commutator takes this as input & converts to DC.
+
+
+ICSP(In-Circuit Serial Programming)
+--------------------------------------------------------------
+
+Generally many chips are programmed prior installing them into a system.If you want to program a chip after installing it into a system then ICSP is used.
+In arduino you can see a 2x3 pin which is ICSP.It is used to program a micro controller(ATMEGA 328 in our Arduino) after installing the mico controller on arduino.
+
+
+Peripheral Devices
+--------------------------------------------------------------
+
+Devices which are not a "part-of(located inside)" the actual machine but are located nearby to the original machine.
+Example : Mouse is a peripheral device to Computer as it is not located inside the computer but near to it.
+
+
+Bus Protocols
+--------------------------------------------------------------
+
+Consider a bus which carries passengers(data) from various bus-stops(Pheripheral devices) to the destination(Master). 
+Remember that you can carry data from master to peripheral devices as well.
+
+
+SPI(Serial Pheripheral Interface)
+--------------------------------------------------------------
+
+SPI is a synchronous(Clock to each IC) data transfer protocol used to communicate with one or more peripheral devices over a short distance.
+In SPI there is always a master which controls the peripheral devices(Slaves).
+There are three lines in SPI.
+MISO(Master Input Slave Output)-Slave line for sending data from slave(peripheral device) to master.
+MOSI(Master Output Slave Input)-Master line for sending data from master to slave(Peripheral device).
+SCK(Serial Clock)-One bit is transmitted at each positive edge of the clock & this is synchronous(To each and every peripheral separately).
+There is a pin on every device called "Slave Select(SS)" which is used by the master to enable or disable the devices.
+When an SS pin of a device is LOW it means that the device is communicating with master & Vice-versa.
+
+I2C (read as "I square C") or TWI(Two Wired Interface)
+-------------------------------------------------------------
+ 
+I2C has 2 lines.
+SDA(Serial Data)-Data transfer b/w master & peripheral devices in this line.
+SCL(Serial Clock)-Same as in SPI.
+Resistors are connected to the wire joining SDA-VCC(1 resistor) and SCL-VCC(1 resistor) to avoid "voltage fluctuations(which can damage the devices)".
+
+
+Comparing SPI & I2C
+------------------------------------------------------------
+
+Both are bus prorocols.
+Both are synchronous.
+Both communication interfaces have serial clock in common.
+SPI has 2 data transfer lines(MISO & MOSI) whereas I2C has only 1 data transfer line(SDA).
+
+
+UART(Universal Asynchronous Receiver/transmitter) or simply "Serial"
+----------------------------------------------------------------------
+
+UART is used for the communication b/w computer and arduino board.
+It communicates on digital pins 0(RX) & 1(TX).
+It can also communicate via USB.
+
+
+Boot Loader
+----------------------------------------------------------------------
+
+A program which loads an Operating System when a computer is turned ON.
+Ex:Linux's GRUB bootloader can be used to select which operating system you'd like to boot into.
+
+
+Flash Memory
+----------------------------------------------------------------------
+
+Non-Volatile such as Pendrives,Boot-loader Program,HDD.
+
+
+EEPROM
+----------------------------------------------------------------------
+
+Electrically Erasable and Programmable Read Only Memory.
+Data stored in ROM can only be modified slowly, with difficulty, or not at all.
+
+
+SRAM(Static) Vs DRAM(Dynamic)
+---------------------------------------------------------------------
+
+Data needs to be refreshed in DRAM i.e You have to save the file after editing it.Otherwise the edited data will be lost.
+SRAM retains data until the power is turned OFF.
+SRAM-More expensive & used in Cache memory.
+DRAM-Less expensive and used in RAM.
+
+
+
+Firmware
+----------------------------------------------------------------------
+
+Software which is closely tied to a hardware.
+What is the difference between OS & firmware?
+OS needs frequent updates whereas firmware doesn't.
+
+
+Bits Vs Baud
+------------------------------------------------------------
+
+"Baud" means the rate at which data is being transferred in a communication channel.
+"9600 Baud" means 9600 bits per second.
+
+
+analogReference()
+------------------------------------------------------------
+
+
+Configures the maximum voltage that an analog input pin can receive from a sensor that is attached to it.
+By default analog input pins measure from ground to 5v.
+How does the data from a sensor analysed?
+By measuring the voltage at the analog input pin which is received from the sensor.
+
+
+Reset
+------------------------------------------------------------
+
+
+Reboots the system.
+
+
+Ultrasonic sensor(Digital sensor)
+-----------------------------------------------------------
+
+To measure the distance of obstacle from the sensor.
+It has echo pin(Receives the signal) and trigger pin(Emits the radiation).
+It emits a sound wave from trigger and receives it on echo after the reflection from an obstacle.
+Implicitly in can calculate the time gap b/w trigger and echo.(we can get the time from here)
+Speed of sound wave in air is 300 m/s.
+distance of obstacle=1/2[ (300) * (time gap b/w trigger's transmission & echo's receive) ].
+
+
+Analog-Digital conversion
+------------------------------------------------------------
+
+Analog Value = 5*(Digital Value)/1023
+
+Even if you have an analog sensor which is connected to analog input pin then it's analog value is implicitly converted to digital value.
+So, if you read the value from this analog input pin it shows the digital value.
+Because the analog value received from the sensor was immediately converted into digital value.
+So if you want to know the analog value that was sensed by the sensor then apply the above formula.
+
+map(analog_input_pin,0,1023,0,255);
+This above line is just decreasing the range of digital values but not doing analog-digital convertion.
+0-1023 & 0-255 both are digital values.
+
+
+Ping time
+-------------------------------------------------------------
+
+
+The time that was consumed by a signal to travel "from the point of transmission -> Destination -> back to Point of Transmission".
+Ex: time "from trigger - to an obstacle - back to the echo(Which is at the same distance as trigger)"
+    time "from our system - to google.com - back to our system"
+i.e time gap b/w point of transmission and point of receival.
+
+
+
+pulseIn()
+-------------------------------------------------------------
+
+It calcultes the ping time in micro seconds.
+The receiver pin automatically goes to HIGH if it receives a signal.
+To calculate the ping time we need to know the time for which the receiver pin was LOW(No Signal) before going to HIGH(Signal found).
+ping_time = pulseIn(receiver_pin,HIGH);
+i.e pulseIn waits the function to go HIGH and it measures the time.
+    If it goes high then it returns the time elapsed.
+    Now if it reaches low then it starts the timer from 0.
+Finally we can get the ping time.
+
+
+LM-35(Temperature Sensor)
+-------------------------------------------------------------
+
+It is an analog sensor.
+It outputs 1 milli Volt per 1 Degree Celcius.
+i.e for 60 Degree Celcius it gives 60 milli volts.
+
+
+Turn OFF a heater automatically
+-------------------------------------------------------------
+
+Transistor and relay are used.
+Heater can be turned off with the relay i.e the relay should be ON.
+But relay needs higher voltage(>5Volts).
+Transistor increases the voltage.
+So, if we turn on the transistor it increases the volage and supplies required voltage to the relay to turn ON.
+Transistor turns ON when Pin 10 is high.
+Temperature that was sensed by LM35 sensor is noted.
+If this sensed temperature is greater than the desired temperature then Pin 10 is set to HIGH.
+So transistor turns ON.
+It generates required voltage to Relay.
+Relay is turned ON.
+Relay turns the heater OFF.
+
+
+DC Motor
+-------------------------------------------------------------
+
+It takes DC as input to rotate it's axle.
+
+
+
+
+Gear Ratio
+-------------------------------------------------------------
+
+Suppose you have a DC motor which has 1200 RPM but you need to turn something at 500 RPM then the gear ratio is 500:1200
+
+
+
+Potentiometre
+-------------------------------------------------------------
+
+
+It has some resistance in it(say 100 Ohms).
+Now if you rotate the knob of the potentiometre say for half of its total rotation then the total resistance now is 50 Ohms(Half of total value)
+If you rotate the knob of the potentiometre by a quarter of its total rotation then the resistance will be 25 Ohms(1/4th of Total resistance).
+As resistance is changing the voltage also changes accordingly.
+With potentiometre we can Change the resistance i.e can be used as a Rheostat.
+We can also use the potentiometre to change the voltage.
+
+
+Measure angle of rotation using potentiometre
+--------------------------------------------------------------
+
+
+Initially we know the resistance present in the potentiometre(Say 100 Ohms).
+If you rotate the knob completely(Say "x" Degrees) i.e covering the whole resistance then now the resistance will be 100 Ohms.
+Say you want to measure the angle of rotation from Point A to Point B.
+Make point A as the starting point of the resistor and rotate it to point B.
+Now you know the resistance from A to B(Say "R").
+For "x" degrees it is 100 Ohms.For "R" Ohms How many Degrees(Say "Y Degrees")?
+Angle of Rotation="Y" Degrees.
+
+
+
+Stall Current
+--------------------------------------------------------------
+
+In a motor if the generated torque is more than the breaking torque then motor stops rotating.
+At this state the motor draws maximum current.
+This current is stall current.
+
+
+Use of feedback in a servo motor
+--------------------------------------------------------------
+
+Say your input voltage is less than the required voltage.
+This can be detected from the feedback.
+Say you have loose connections in your circuit.
+If current doesn't pass through the feedback then this can be detected easily using feedback.
+
+
+Decoupling Capacitors
+--------------------------------------------------------------
+
+Even with a DC source the input voltage is rarely stable in practice.
+A DC voltage source in practice shows some voltage spikes.
+Say you have 2 parts in a network(Circuit-A & Circuit-B).
+Decoupling capacitor is situated at the junction of these 2 circuits of a network.
+Say you receive DC from Circuit A to circuit B.
+If there is a voltage spike in DC from circuit A then capacitor absorbs excess energy and outputs spikeless DC to circuit B.
+If there is low DC from circuit A then capacitor supplies some energy to that DC signal and outputs required DC to Circuit B.
+
